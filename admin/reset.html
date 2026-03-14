@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reset Password — Siler Technology</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body data-admin-page="reset" class="admin-login-page">
+
+  <div class="login-box">
+    <div class="login-header">
+      <div class="login-title">Reset Password</div>
+      <div class="login-sub">A reset link will be sent to your registered admin email.</div>
+    </div>
+    <div class="login-body">
+
+      <!-- Step 1: Request reset -->
+      <div id="reset-request-section">
+        <form id="reset-request-form">
+          <p style="font-family:var(--font-mono);font-size:0.8rem;color:var(--ink-mid);line-height:1.7;margin-bottom:1.5rem;">Click below and a reset link will be sent to the admin email address configured in your Cloudflare Worker.</p>
+          <button type="submit" class="login-submit">Send Reset Link</button>
+        </form>
+        <div id="reset-sent-msg" style="display:none;font-family:var(--font-mono);font-size:0.8rem;color:var(--ink-mid);line-height:1.7;padding:1rem;border:1.5px solid #16a34a;background:#f0fdf4;">
+          Reset link sent. Check your email — the link expires in 1 hour.
+        </div>
+        <a href="login.html" class="login-forgot">← Back to login</a>
+      </div>
+
+      <!-- Step 2: Set new password (shown when ?token= is in URL) -->
+      <div id="reset-token-section" style="display:none;">
+        <div id="reset-error" class="login-error"></div>
+        <div id="reset-success" style="display:none;font-family:var(--font-mono);font-size:0.8rem;color:var(--ink-mid);line-height:1.7;padding:1rem;border:1.5px solid #16a34a;background:#f0fdf4;margin-bottom:1rem;">
+          Password updated! <a href="login.html" style="text-decoration:underline;">Sign in →</a>
+        </div>
+        <form id="reset-form">
+          <div class="login-field">
+            <label class="login-label" for="new-password">New Password</label>
+            <input type="password" id="new-password" class="login-input" placeholder="New password" required minlength="12" autocomplete="new-password">
+          </div>
+          <div class="login-field">
+            <label class="login-label" for="confirm-password">Confirm Password</label>
+            <input type="password" id="confirm-password" class="login-input" placeholder="Confirm password" required autocomplete="new-password" style="border-bottom:var(--border);margin-bottom:1.5rem;">
+          </div>
+          <button type="submit" class="login-submit">Set New Password</button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="../js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CMS — Siler Technology</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body data-admin-page="panel">
+
+<div class="admin-layout">
+
+  <!-- ── Sidebar ── -->
+  <aside class="admin-sidebar">
+    <div class="admin-sidebar-header">
+      <div class="admin-sidebar-title">Siler Tech CMS</div>
+      <div class="admin-sidebar-sub">Content Management</div>
+    </div>
+    <nav class="admin-nav">
+      <div class="admin-nav-item active" data-section="projects">
+        <svg class="admin-nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="1" width="6" height="6"/><rect x="9" y="1" width="6" height="6"/><rect x="1" y="9" width="6" height="6"/><rect x="9" y="9" width="6" height="6"/></svg>
+        Projects
+      </div>
+      <div class="admin-nav-item" data-section="subscribers">
+        <svg class="admin-nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="5" r="3"/><path d="M2 14c0-3.314 2.686-6 6-6s6 2.686 6 6"/></svg>
+        Subscribers
+        <span id="subscriber-count" style="margin-left:auto;background:var(--ink-faint);font-family:var(--font-mono);font-size:0.6rem;padding:2px 6px;border-radius:20px;">0</span>
+      </div>
+      <div class="admin-nav-item" data-section="newsletter">
+        <svg class="admin-nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="14" height="10" rx="1"/><path d="M1 4l7 5 7-5"/></svg>
+        Send Newsletter
+      </div>
+      <div class="admin-nav-item" data-section="settings">
+        <svg class="admin-nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="2.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.41 1.41M11.54 11.54l1.41 1.41M3.05 12.95l1.41-1.41M11.54 4.46l1.41-1.41"/></svg>
+        Settings
+      </div>
+    </nav>
+    <div style="border-top:var(--border);margin-top:auto;padding:1rem 1.5rem;">
+      <button id="logout-btn" style="width:100%;border:var(--border-thin);background:none;padding:8px;font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-light);cursor:pointer;transition:all 0.15s ease;" onmouseenter="this.style.background='var(--ink)';this.style.color='var(--paper)'" onmouseleave="this.style.background='none';this.style.color='var(--ink-light)'">Sign Out</button>
+      <a href="../index.html" style="display:block;text-align:center;font-family:var(--font-mono);font-size:0.65rem;color:var(--ink-light);margin-top:0.75rem;">← View Site</a>
+    </div>
+  </aside>
+
+  <!-- ── Main Content ── -->
+  <div class="admin-main">
+
+    <!-- ─── SECTION: Projects List ─── -->
+    <div id="section-projects" class="admin-section">
+      <div class="admin-page-header">
+        <div>
+          <div class="admin-page-title">Projects</div>
+          <div class="admin-page-sub">Manage your work. Click a project to edit.</div>
+        </div>
+        <button class="btn btn--filled" onclick="newProject()">+ New Project</button>
+      </div>
+      <div id="admin-project-list" class="admin-project-list">
+        <div style="padding:3rem;text-align:center;font-family:var(--font-mono);font-size:0.8rem;color:var(--ink-light);">Loading...</div>
+      </div>
+    </div>
+
+    <!-- ─── SECTION: Project Editor ─── -->
+    <div id="section-editor" class="admin-section" style="display:none;">
+      <div class="admin-page-header">
+        <div>
+          <div id="editor-heading" class="admin-page-title">New Project</div>
+          <div class="admin-page-sub">Fill in the details below. You can publish when ready.</div>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn" onclick="cancelEditor()">Cancel</button>
+          <button id="save-btn" class="btn btn--filled" onclick="saveProject()">Save Project</button>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 300px;gap:2rem;">
+        <!-- Left: Main fields -->
+        <div>
+          <div class="form-group">
+            <label class="form-label" for="editor-title">Project Title *</label>
+            <input type="text" id="editor-title" class="form-input" placeholder="e.g. Blender ProKit v2.4">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="editor-type">Category</label>
+              <select id="editor-type" class="form-select">
+                <option value="blender">Blender Addon</option>
+                <option value="plugin">Plugin</option>
+                <option value="unreal">Unreal Engine</option>
+                <option value="game">Game</option>
+                <option value="html5">HTML5 Game</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="editor-date">Publish Date</label>
+              <input type="date" id="editor-date" class="form-input">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="editor-synopsis">Synopsis (shown in feed)</label>
+            <textarea id="editor-synopsis" class="form-textarea" style="min-height:90px;" placeholder="2–3 sentence description shown in the project feed and cards."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Content (full project page)</label>
+            <div class="editor-toolbar">
+              <button class="editor-btn" onclick="execEditorCmd('bold')" title="Bold"><b>B</b></button>
+              <button class="editor-btn" onclick="execEditorCmd('italic')" title="Italic"><i>I</i></button>
+              <button class="editor-btn" onclick="execEditorCmd('underline')" title="Underline"><u>U</u></button>
+              <button class="editor-btn" onclick="execEditorCmd('strikeThrough')">S̶</button>
+              <span style="width:1px;background:var(--ink-faint);margin:0 4px;"></span>
+              <button class="editor-btn" onclick="execEditorCmd('formatBlock','h2')">H2</button>
+              <button class="editor-btn" onclick="execEditorCmd('formatBlock','h3')">H3</button>
+              <button class="editor-btn" onclick="execEditorCmd('formatBlock','p')">P</button>
+              <span style="width:1px;background:var(--ink-faint);margin:0 4px;"></span>
+              <button class="editor-btn" onclick="execEditorCmd('insertUnorderedList')">• List</button>
+              <button class="editor-btn" onclick="execEditorCmd('insertOrderedList')">1. List</button>
+              <span style="width:1px;background:var(--ink-faint);margin:0 4px;"></span>
+              <button class="editor-btn" onclick="insertLink()">Link</button>
+              <button class="editor-btn" onclick="insertImage()">Image URL</button>
+              <span style="width:1px;background:var(--ink-faint);margin:0 4px;"></span>
+              <button class="editor-btn" onclick="execEditorCmd('removeFormat')">Clear</button>
+            </div>
+            <div id="editor-content" class="editor-content" contenteditable="true" spellcheck="true" placeholder="Write your full project description here. Use the toolbar above to add formatting, headings, and images."></div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="editor-images">Image URLs (one per line — from PostImages, Imgur, etc.)</label>
+            <textarea id="editor-images" class="form-textarea" style="min-height:80px;" placeholder="https://i.postimg.cc/your-image.jpg&#10;https://i.postimg.cc/another-image.png"></textarea>
+          </div>
+        </div>
+
+        <!-- Right: Meta sidebar -->
+        <div style="border-left:var(--border);padding-left:1.5rem;">
+          <div class="form-group">
+            <label class="form-label" for="editor-status">Status</label>
+            <select id="editor-status" class="form-select">
+              <option value="draft">Draft</option>
+              <option value="published">Published</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="editor-external">External URL (optional)</label>
+            <input type="url" id="editor-external" class="form-input" placeholder="https://skybridgesaga.com">
+            <p style="font-family:var(--font-mono);font-size:0.65rem;color:var(--ink-light);margin-top:6px;">Shown as a link in the project sidebar.</p>
+          </div>
+
+          <div style="border-top:var(--border);padding-top:1.5rem;margin-top:1.5rem;">
+            <div class="label" style="margin-bottom:0.75rem;">Quick Tips</div>
+            <ul style="font-family:var(--font-mono);font-size:0.72rem;color:var(--ink-light);line-height:2;list-style:none;">
+              <li>• Upload images to <a href="https://postimages.org" target="_blank" style="text-decoration:underline;">postimages.org ↗</a> and paste the direct link above</li>
+              <li>• Use H2 headings for section breaks in content</li>
+              <li>• Save as Draft first, publish when ready</li>
+              <li>• Project URL: <code style="font-size:0.65rem;">#project/your-title-slug</code></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── SECTION: Subscribers ─── -->
+    <div id="section-subscribers" class="admin-section" style="display:none;">
+      <div class="admin-page-header">
+        <div>
+          <div class="admin-page-title">Subscribers</div>
+          <div class="admin-page-sub" id="subscribers-count-label">Your newsletter list.</div>
+        </div>
+      </div>
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Subscribed</th>
+          </tr>
+        </thead>
+        <tbody id="subscribers-tbody">
+          <tr><td colspan="3" style="text-align:center;color:var(--ink-light);padding:2rem;">Loading...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ─── SECTION: Newsletter ─── -->
+    <div id="section-newsletter" class="admin-section" style="display:none;">
+      <div class="admin-page-header">
+        <div>
+          <div class="admin-page-title">Send Newsletter</div>
+          <div class="admin-page-sub">Compose and send a broadcast to all subscribers.</div>
+        </div>
+      </div>
+      <div style="max-width:640px;">
+        <div class="form-group">
+          <label class="form-label" for="nl-subject">Subject Line</label>
+          <input type="text" id="nl-subject" class="form-input" placeholder="e.g. Blender ProKit v2.4 is out!">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="nl-body">Email Body</label>
+          <textarea id="nl-body" class="form-textarea" style="min-height:300px;" placeholder="Write your newsletter content here. Plain text or basic HTML works."></textarea>
+        </div>
+        <div style="display:flex;align-items:center;gap:1rem;">
+          <button id="nl-send-btn" class="btn btn--filled" onclick="sendNewsletter()">Send Newsletter ↗</button>
+          <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--ink-light);">Will send to <strong id="subscriber-count-nl">—</strong> subscribers</span>
+        </div>
+        <p style="font-family:var(--font-mono);font-size:0.72rem;color:var(--ink-light);line-height:1.7;margin-top:1.5rem;border-top:var(--border-thin);padding-top:1rem;">Emails are sent via Resend. Each email includes an unsubscribe link automatically. Sending cannot be undone.</p>
+      </div>
+    </div>
+
+    <!-- ─── SECTION: Settings ─── -->
+    <div id="section-settings" class="admin-section" style="display:none;">
+      <div class="admin-page-header">
+        <div>
+          <div class="admin-page-title">Settings</div>
+          <div class="admin-page-sub">Manage your admin password and site configuration.</div>
+        </div>
+      </div>
+      <div style="max-width:480px;">
+        <div style="border:var(--border);margin-bottom:2rem;">
+          <div style="border-bottom:var(--border);padding:1.25rem 1.5rem;font-weight:700;font-size:0.95rem;">Change Password</div>
+          <div style="padding:1.5rem;">
+            <div class="form-group">
+              <label class="form-label">Current Password</label>
+              <input type="password" id="current-pw" class="form-input" placeholder="Current password" autocomplete="current-password">
+            </div>
+            <div class="form-group">
+              <label class="form-label">New Password</label>
+              <input type="password" id="new-pw" class="form-input" placeholder="Minimum 12 characters" autocomplete="new-password">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Confirm New Password</label>
+              <input type="password" id="confirm-pw" class="form-input" placeholder="Repeat new password" autocomplete="new-password">
+            </div>
+            <button class="btn btn--filled" onclick="changePassword()">Update Password</button>
+          </div>
+        </div>
+
+        <div style="border:var(--border);">
+          <div style="border-bottom:var(--border);padding:1.25rem 1.5rem;font-weight:700;font-size:0.95rem;">Worker Configuration</div>
+          <div style="padding:1.5rem;font-family:var(--font-mono);font-size:0.78rem;color:var(--ink-mid);line-height:1.8;">
+            <p>API base URL: <code style="background:var(--paper-off);padding:2px 6px;border:var(--border-thin);">/api</code></p>
+            <p style="margin-top:0.5rem;">Update <code>API_BASE</code> in <code>js/main.js</code> and <code>js/admin.js</code> to your deployed Worker URL if hosting the Worker separately from the site.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div id="delete-modal" class="modal-overlay">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Delete Project</div>
+    </div>
+    <div class="modal-body">
+      Are you sure you want to delete <strong id="delete-target-name"></strong>? This cannot be undone and will remove the project from the site immediately.
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="cancelDelete()">Cancel</button>
+      <button class="btn btn--filled" style="background:#dc2626;border-color:#dc2626;" onclick="confirmDeleteProject()">Delete</button>
+    </div>
+  </div>
+</div>
+
+<script src="../js/admin.js"></script>
+<script>
+  // Update subscriber count in newsletter section
+  const observer = new MutationObserver(() => {
+    const count = document.getElementById('subscriber-count')?.textContent;
+    const nlCount = document.getElementById('subscriber-count-nl');
+    if (nlCount && count) nlCount.textContent = count;
+    const label = document.getElementById('subscribers-count-label');
+    if (label && count) label.textContent = `${count} people on your list.`;
+  });
+  observer.observe(document.body, { subtree: true, childList: true, characterData: true });
+
+  // Change password
+  async function changePassword() {
+    const current = document.getElementById('current-pw').value;
+    const next = document.getElementById('new-pw').value;
+    const confirm = document.getElementById('confirm-pw').value;
+    if (next !== confirm) { alert('Passwords do not match.'); return; }
+    if (next.length < 12) { alert('Password must be at least 12 characters.'); return; }
+    try {
+      const res = await fetch('/api/admin/change-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${sessionStorage.getItem('siler_admin_token')}` },
+        body: JSON.stringify({ currentPassword: current, newPassword: next })
+      });
+      if (res.ok) {
+        alert('Password updated. You will be signed out.');
+        sessionStorage.removeItem('siler_admin_token');
+        window.location.href = 'login.html';
+      } else {
+        const d = await res.json();
+        alert(d.error || 'Update failed.');
+      }
+    } catch { alert('Connection error.'); }
+  }
+</script>
+</body>
+</html>

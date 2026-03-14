@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — Siler Technology</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body data-admin-page="login" class="admin-login-page">
+
+  <div class="login-box">
+    <div class="login-header">
+      <div class="login-title">Admin Access</div>
+      <div class="login-sub">Siler Technology CMS</div>
+    </div>
+    <div class="login-body">
+      <div id="login-error" class="login-error"></div>
+      <form id="login-form">
+        <div class="login-field">
+          <label class="login-label" for="login-password">Password</label>
+          <input type="password" id="login-password" class="login-input" placeholder="Enter admin password" required autocomplete="current-password">
+        </div>
+        <input type="hidden"> <!-- spacer so border shows -->
+        <button type="submit" class="login-submit">Sign In</button>
+        <a href="reset.html" class="login-forgot">Forgot password?</a>
+      </form>
+    </div>
+  </div>
+
+  <script src="../js/admin.js"></script>
+</body>
+</html>
