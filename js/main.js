@@ -55,7 +55,7 @@ function showPage(page) {
 // ── Load Projects from Worker ──
 async function loadProjects() {
   try {
-    const res = await fetch(`${API_BASE}/projects`);
+    const res = await fetch(`${https://siler-tech-api.jacobdsiler.workers.dev}/projects`);
     projects = await res.json();
   } catch {
     // Fallback demo data for development
@@ -193,7 +193,7 @@ async function showProjectPage(id) {
   // If not cached yet, fetch
   if (!project) {
     try {
-      const res = await fetch(`${API_BASE}/projects/${id}`);
+      const res = await fetch(`${https://siler-tech-api.jacobdsiler.workers.dev}/projects/${id}`);
       project = await res.json();
     } catch {
       showPage('home');
@@ -276,7 +276,7 @@ function initNewsletter() {
     btn.textContent = 'Subscribing...';
     btn.disabled = true;
     try {
-      const res = await fetch(`${API_BASE}/subscribe`, {
+      const res = await fetch(`${https://siler-tech-api.jacobdsiler.workers.dev}/subscribe`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, name })
