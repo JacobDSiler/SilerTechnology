@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Siler Technology</title>
+  <meta name="description" content="Siler Technology — Blender addons, plugins, and game projects by Jacob Siler.">
+  <meta property="og:title" content="Siler Technology">
+  <meta property="og:description" content="Blender addons, plugins, and game projects by Jacob Siler.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://silertech.jacobsiler.com">
+  <link rel="canonical" href="https://silertech.jacobsiler.com">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ── Navigation ── -->
+  <nav class="site-nav">
+    <div class="nav-inner">
+      <a href="#home" class="nav-logo" data-route="home">Siler Technology</a>
+      <ul class="nav-links">
+        <li><a href="#projects" data-route="projects">Projects</a></li>
+        <li><a href="https://skybridgesaga.com" target="_blank" rel="noopener">Sky Bridge Saga ↗</a></li>
+      </ul>
+      <a href="#projects" class="nav-cta" data-route="projects">View All Work</a>
+    </div>
+  </nav>
+
+  <!-- ══════════════════════════════════════
+       PAGE: HOME
+  ══════════════════════════════════════ -->
+  <main id="page-home" class="page">
+
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-inner">
+        <div>
+          <p class="label hero-label">Siler Technology</p>
+          <h1 class="hero-title">Tools &amp;<br>Worlds Built<br>from Scratch.</h1>
+          <p class="hero-desc">Blender addons, creative plugins, and game projects — shipped in cycles. Everything made to be useful, playable, or both.</p>
+        </div>
+        <div class="hero-right">
+          <div class="hero-stat">
+            <div class="hero-stat-num" id="stat-projects">—</div>
+            <div class="hero-stat-label">Projects shipped</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-num">3</div>
+            <div class="hero-stat-label">Product categories</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-num">∞</div>
+            <div class="hero-stat-label">Cycles remaining</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured Projects Feed -->
+    <section>
+      <div class="container">
+        <div class="section-header">
+          <span class="label">Latest Work</span>
+          <a href="#projects" class="section-link" data-route="projects">All projects →</a>
+        </div>
+      </div>
+      <div id="home-featured" style="border-bottom: var(--border);">
+        <!-- Rendered by JS -->
+        <div style="padding:4rem 2rem;text-align:center;font-family:var(--font-mono);font-size:0.8rem;color:var(--ink-light);">Loading projects...</div>
+      </div>
+    </section>
+
+    <!-- Categories Strip -->
+    <section style="border-bottom: var(--border);">
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);">
+        <div style="border-right:var(--border);padding:2.5rem 2rem;">
+          <div class="label" style="margin-bottom:0.75rem;">Blender Addons</div>
+          <h3 style="font-size:1.1rem;margin-bottom:0.5rem;">Workflow Toolkits</h3>
+          <p style="font-family:var(--font-mono);font-size:0.8rem;color:var(--ink-mid);line-height:1.6;">Addons that plug directly into your Blender workflow. UV tools, geometry node extensions, batch utilities.</p>
+        </div>
+        <div style="border-right:var(--border);padding:2.5rem 2rem;">
+          <div class="label" style="margin-bottom:0.75rem;">Plugins</div>
+          <h3 style="font-size:1.1rem;margin-bottom:0.5rem;">Creative Extensions</h3>
+          <p style="font-family:var(--font-mono);font-size:0.8rem;color:var(--ink-mid);line-height:1.6;">Plugins for creative software and pipelines. Each one solves a specific, real problem in a production workflow.</p>
+        </div>
+        <div style="padding:2.5rem 2rem;">
+          <div class="label" style="margin-bottom:0.75rem;">Game Projects</div>
+          <h3 style="font-size:1.1rem;margin-bottom:0.5rem;">Playable Worlds</h3>
+          <p style="font-family:var(--font-mono);font-size:0.8rem;color:var(--ink-mid);line-height:1.6;">Unreal Engine adventures and HTML5 games. Full details and playable demos at <a href="https://skybridgesaga.com" target="_blank" style="text-decoration:underline;text-underline-offset:3px;">skybridgesaga.com ↗</a></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="newsletter-section">
+      <div class="newsletter-inner">
+        <div>
+          <p class="label" style="margin-bottom:0.75rem;">Newsletter</p>
+          <h2 class="newsletter-title">Stay in the<br>Loop.</h2>
+          <p class="newsletter-desc">New project launches, development updates, and release notes — delivered to your inbox. No spam, unsubscribe any time.</p>
+        </div>
+        <div>
+          <form id="newsletter-form" class="newsletter-form">
+            <input type="text" id="newsletter-name" class="newsletter-input" placeholder="Your name (optional)" autocomplete="name">
+            <input type="email" id="newsletter-email" class="newsletter-input" placeholder="your@email.com" required autocomplete="email">
+            <button type="submit" class="newsletter-submit">Subscribe to Updates</button>
+          </form>
+          <p class="newsletter-note">Your data is never shared or sold. Unsubscribe instantly via any email.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section class="about-section">
+      <div class="about-inner">
+        <div class="about-left">
+          <p class="label" style="margin-bottom:0.75rem;">About</p>
+          <h2 style="font-size:2rem;margin-bottom:1rem;">Jacob Siler</h2>
+          <p class="label">Indie dev. Builder.</p>
+          <div class="about-links" style="margin-top:1.5rem;">
+            <a href="https://skybridgesaga.com" target="_blank" rel="noopener" class="about-link">
+              <span>skybridgesaga.com</span><span>↗</span>
+            </a>
+          </div>
+        </div>
+        <div class="about-right">
+          <p>I make things in cycles — addons, plugins, and games — shipping each one when it's ready and moving on to the next problem worth solving.</p>
+          <p>Siler Technology is where my tools and dev work lives. Game projects, playable demos, and full game info can be found at <a href="https://skybridgesaga.com" target="_blank" style="text-decoration:underline;text-underline-offset:3px;">skybridgesaga.com ↗</a></p>
+          <p>If you want to follow along, the newsletter is the best way to hear about new releases as they happen.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ══════════════════════════════════════
+       PAGE: PROJECTS GRID
+  ══════════════════════════════════════ -->
+  <main id="page-projects" class="page" style="display:none;">
+    <div style="border-bottom:var(--border);padding:3rem 0 2.5rem;">
+      <div class="container">
+        <p class="label" style="margin-bottom:0.75rem;">All Work</p>
+        <h1 style="font-size:clamp(2.5rem,6vw,4rem);font-weight:800;letter-spacing:-0.04em;">Projects.</h1>
+      </div>
+    </div>
+
+    <!-- Filter bar -->
+    <div style="border-bottom:var(--border);">
+      <div class="container" style="display:flex;gap:0;align-items:stretch;overflow-x:auto;">
+        <button class="filter-btn" data-filter="all" onclick="filterProjects('all',this)" style="border:none;border-right:var(--border);background:var(--ink);color:var(--paper);padding:12px 20px;font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;white-space:nowrap;">All</button>
+        <button class="filter-btn" data-filter="blender" onclick="filterProjects('blender',this)" style="border:none;border-right:var(--border);background:none;color:var(--ink-light);padding:12px 20px;font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;white-space:nowrap;">Blender</button>
+        <button class="filter-btn" data-filter="plugin" onclick="filterProjects('plugin',this)" style="border:none;border-right:var(--border);background:none;color:var(--ink-light);padding:12px 20px;font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;white-space:nowrap;">Plugins</button>
+        <button class="filter-btn" data-filter="unreal" onclick="filterProjects('unreal',this)" style="border:none;border-right:var(--border);background:none;color:var(--ink-light);padding:12px 20px;font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;white-space:nowrap;">Unreal</button>
+        <button class="filter-btn" data-filter="game" onclick="filterProjects('game',this)" style="border:none;background:none;color:var(--ink-light);padding:12px 20px;font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;white-space:nowrap;">Games</button>
+      </div>
+    </div>
+
+    <div id="projects-grid" class="projects-grid" style="border-left:var(--border);">
+      <!-- Rendered by JS -->
+    </div>
+
+  </main>
+
+  <!-- ══════════════════════════════════════
+       PAGE: INDIVIDUAL PROJECT
+  ══════════════════════════════════════ -->
+  <main id="page-project" class="page" style="display:none;">
+    <!-- Rendered entirely by JS -->
+    <div style="padding:1rem 0;">
+      <div class="container">
+        <a href="#projects" data-route="projects" style="font-family:var(--font-mono);font-size:0.75rem;letter-spacing:0.05em;color:var(--ink-light);display:inline-flex;align-items:center;gap:6px;margin-bottom:2rem;">← All projects</a>
+      </div>
+    </div>
+  </main>
+
+  <!-- ── Footer ── -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span class="footer-copy">© 2025 Siler Technology</span>
+      <div class="footer-links">
+        <a href="https://skybridgesaga.com" target="_blank" rel="noopener">skybridgesaga.com</a>
+        <a href="admin/login.html" class="footer-admin">Admin</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script>
+    // Filter functionality
+    function filterProjects(type, btn) {
+      document.querySelectorAll('.filter-btn').forEach(b => {
+        b.style.background = 'none';
+        b.style.color = 'var(--ink-light)';
+      });
+      btn.style.background = 'var(--ink)';
+      btn.style.color = 'var(--paper)';
+
+      const grid = document.getElementById('projects-grid');
+      const cards = grid.querySelectorAll('.project-card');
+      let visibleCount = 0;
+      cards.forEach(card => {
+        const match = type === 'all' || card.dataset.type === type;
+        card.style.display = match ? 'flex' : 'none';
+        if (match) {
+          visibleCount++;
+          card.querySelector('.project-card-num').textContent = String(visibleCount).padStart(2,'0');
+        }
+      });
+    }
+
+    // Patch renderProjectsGrid to add data-type attributes
+    const _orig = window.renderProjectsGrid;
+    document.addEventListener('DOMContentLoaded', () => {
+      // After projects load, add data-type to cards
+      const observer = new MutationObserver(() => {
+        document.querySelectorAll('.project-card').forEach((card, i) => {
+          if (!card.dataset.type) {
+            const tag = card.querySelector('.tag');
+            if (tag) {
+              const cls = [...tag.classList].find(c => c.startsWith('tag--') && c !== 'tag');
+              if (cls) card.dataset.type = cls.replace('tag--', '');
+            }
+          }
+        });
+        // Update stat
+        const statEl = document.getElementById('stat-projects');
+        if (statEl) {
+          const count = document.querySelectorAll('#home-featured a').length;
+          if (count > 0) statEl.textContent = count;
+        }
+      });
+      observer.observe(document.body, { childList: true, subtree: true });
+    });
+  </script>
+</body>
+</html>
