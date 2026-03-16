@@ -267,14 +267,14 @@
 <script src="../js/admin.js"></script>
 <script>
   // Update subscriber count in newsletter section
-  const observer = new MutationObserver(() => {
+  function syncSubscriberCount() {
     const count = document.getElementById('subscriber-count')?.textContent;
     const nlCount = document.getElementById('subscriber-count-nl');
-    if (nlCount && count) nlCount.textContent = count;
     const label = document.getElementById('subscribers-count-label');
+    if (nlCount && count) nlCount.textContent = count;
     if (label && count) label.textContent = `${count} people on your list.`;
-  });
-  observer.observe(document.body, { subtree: true, childList: true, characterData: true });
+  }
+  setInterval(syncSubscriberCount, 1000);
 
   // Change password
   async function changePassword() {
@@ -284,7 +284,7 @@
     if (next !== confirm) { alert('Passwords do not match.'); return; }
     if (next.length < 12) { alert('Password must be at least 12 characters.'); return; }
     try {
-      const res = await fetch('/api/admin/change-password', {
+      const res = await fetch('https://siler-tech-api.jacobdsiler.workers.dev/admin/change-password', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${sessionStorage.getItem('siler_admin_token')}` },
         body: JSON.stringify({ currentPassword: current, newPassword: next })
