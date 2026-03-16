@@ -1,6 +1,6 @@
 /* ── Siler Technology — Admin Panel JS ── */
 
-const API_BASE = '/api';
+const API_BASE = 'https://siler-tech-api.jacobdsiler.workers.dev';
 let adminToken = null;
 let editingProjectId = null;
 let projects = [];
