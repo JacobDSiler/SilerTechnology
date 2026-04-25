@@ -52,7 +52,10 @@
           <div class="admin-page-title">Projects</div>
           <div class="admin-page-sub">Manage your work. Click a project to edit.</div>
         </div>
-        <button class="btn btn--filled" onclick="newProject()">+ New Project</button>
+        <div style="display:flex;gap:8px;">
+          <button class="btn" onclick="openImportModal()">Import JSON</button>
+          <button class="btn btn--filled" onclick="newProject()">+ New Project</button>
+        </div>
       </div>
       <div id="admin-project-list" class="admin-project-list">
         <div style="padding:3rem;text-align:center;font-family:var(--font-mono);font-size:0.8rem;color:var(--ink-light);">Loading...</div>
@@ -267,14 +270,14 @@
 <script src="../js/admin.js"></script>
 <script>
   // Update subscriber count in newsletter section
-  function syncSubscriberCount() {
+  const observer = new MutationObserver(() => {
     const count = document.getElementById('subscriber-count')?.textContent;
     const nlCount = document.getElementById('subscriber-count-nl');
-    const label = document.getElementById('subscribers-count-label');
     if (nlCount && count) nlCount.textContent = count;
+    const label = document.getElementById('subscribers-count-label');
     if (label && count) label.textContent = `${count} people on your list.`;
-  }
-  setInterval(syncSubscriberCount, 1000);
+  });
+  observer.observe(document.body, { subtree: true, childList: true, characterData: true });
 
   // Change password
   async function changePassword() {
@@ -284,7 +287,7 @@
     if (next !== confirm) { alert('Passwords do not match.'); return; }
     if (next.length < 12) { alert('Password must be at least 12 characters.'); return; }
     try {
-      const res = await fetch('https://siler-tech-api.jacobdsiler.workers.dev/admin/change-password', {
+      const res = await fetch('/api/admin/change-password', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${sessionStorage.getItem('siler_admin_token')}` },
         body: JSON.stringify({ currentPassword: current, newPassword: next })
@@ -298,6 +301,118 @@
         alert(d.error || 'Update failed.');
       }
     } catch { alert('Connection error.'); }
+  }
+</script>
+
+<!-- Import JSON Modal -->
+<div id="import-modal" class="modal-overlay">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Import Projects from JSON</div>
+    </div>
+    <div class="modal-body">
+      <p style="font-family:var(--font-mono);font-size:0.78rem;color:var(--ink-mid);line-height:1.7;margin-bottom:1.25rem;">
+        Upload a JSON file exported from the Offline Creator. Projects with matching IDs will be updated; new ones will be added. Nothing is deleted.
+      </p>
+      <div id="import-drop-zone" style="border:2px dashed var(--ink-faint);padding:2rem;text-align:center;cursor:pointer;transition:all 0.15s;"
+        ondragover="event.preventDefault();this.style.borderColor='var(--ink)'"
+        ondragleave="this.style.borderColor='var(--ink-faint)'"
+        ondrop="handleAdminDrop(event)"
+        onclick="document.getElementById('import-file-input').click()">
+        <div style="font-weight:700;margin-bottom:0.4rem;">Drop .json file here</div>
+        <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--ink-light);">or click to browse</div>
+        <input type="file" id="import-file-input" accept=".json" style="display:none;" onchange="handleAdminFileSelect(event)" />
+      </div>
+      <div id="import-result-msg" style="display:none;"></div>
+    </div>
+    <div class="modal-footer">
+      <button id="import-confirm-btn" class="btn btn--filled" style="display:none;" onclick="confirmAdminImport()">Import Projects</button>
+      <button class="btn" onclick="closeImportModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  let _pendingImport = null;
+
+  function openImportModal() {
+    _pendingImport = null;
+    document.getElementById('import-result-msg').style.display = 'none';
+    document.getElementById('import-confirm-btn').style.display = 'none';
+    document.getElementById('import-file-input').value = '';
+    document.getElementById('import-modal').classList.add('show');
+  }
+
+  function closeImportModal() {
+    document.getElementById('import-modal').classList.remove('show');
+    _pendingImport = null;
+  }
+
+  function handleAdminDrop(e) {
+    e.preventDefault();
+    document.getElementById('import-drop-zone').style.borderColor = 'var(--ink-faint)';
+    const file = e.dataTransfer.files[0];
+    if (file) parseAdminImportFile(file);
+  }
+
+  function handleAdminFileSelect(e) {
+    const file = e.target.files[0];
+    if (file) parseAdminImportFile(file);
+  }
+
+  function parseAdminImportFile(file) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const msg = document.getElementById('import-result-msg');
+      try {
+        const data = JSON.parse(e.target.result);
+        const incoming = Array.isArray(data) ? data : (data.projects || []);
+        if (!Array.isArray(incoming) || !incoming.length) throw new Error('No projects found in file.');
+        _pendingImport = incoming;
+        msg.style.cssText = 'display:block;background:#f0fdf4;border:1.5px solid #16a34a;color:#15803d;padding:0.75rem 1rem;font-family:var(--font-mono);font-size:0.75rem;margin-top:0.75rem;';
+        msg.textContent = `Found ${incoming.length} project${incoming.length !== 1 ? 's' : ''} ready to import.`;
+        document.getElementById('import-confirm-btn').style.display = 'inline-flex';
+      } catch(err) {
+        msg.style.cssText = 'display:block;background:#fef2f2;border:1.5px solid #dc2626;color:#b91c1c;padding:0.75rem 1rem;font-family:var(--font-mono);font-size:0.75rem;margin-top:0.75rem;';
+        msg.textContent = 'Invalid JSON: ' + err.message;
+        document.getElementById('import-confirm-btn').style.display = 'none';
+        _pendingImport = null;
+      }
+    };
+    reader.readAsText(file);
+  }
+
+  async function confirmAdminImport() {
+    if (!_pendingImport) return;
+    const token = sessionStorage.getItem('siler_admin_token');
+    const btn = document.getElementById('import-confirm-btn');
+    btn.textContent = 'Importing...';
+    btn.disabled = true;
+    let added = 0, updated = 0, failed = 0;
+    for (const project of _pendingImport) {
+      try {
+        const checkRes = await fetch(`${API_BASE}/projects/${project.id}`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const method = checkRes.ok ? 'PUT' : 'POST';
+        const url = checkRes.ok ? `${API_BASE}/projects/${project.id}` : `${API_BASE}/projects`;
+        const res = await fetch(url, {
+          method,
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+          body: JSON.stringify(project)
+        });
+        if (res.ok) { checkRes.ok ? updated++ : added++; } else failed++;
+      } catch { failed++; }
+    }
+    closeImportModal();
+    await loadAdminProjects();
+    let toast = document.getElementById('admin-toast');
+    if (!toast) { toast = document.createElement('div'); toast.id = 'admin-toast'; toast.className = 'toast'; document.body.appendChild(toast); }
+    toast.textContent = `Import complete: ${added} added, ${updated} updated${failed ? ', ' + failed + ' failed' : ''}.`;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 4000);
+    btn.textContent = 'Import Projects';
+    btn.disabled = false;
   }
 </script>
 </body>
