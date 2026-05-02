@@ -208,28 +208,32 @@
       });
     }
 
-    // Patch renderProjectsGrid to add data-type attributes
-    const _orig = window.renderProjectsGrid;
-    document.addEventListener('DOMContentLoaded', () => {
-      // After projects load, add data-type to cards
-      const observer = new MutationObserver(() => {
-        document.querySelectorAll('.project-card').forEach((card, i) => {
-          if (!card.dataset.type) {
-            const tag = card.querySelector('.tag');
-            if (tag) {
-              const cls = [...tag.classList].find(c => c.startsWith('tag--') && c !== 'tag');
-              if (cls) card.dataset.type = cls.replace('tag--', '');
-            }
+    // Add data-type to project cards after grid renders — polled safely, no MutationObserver
+    function tagProjectCards() {
+      document.querySelectorAll('.project-card').forEach(card => {
+        if (!card.dataset.type) {
+          const tag = card.querySelector('.tag');
+          if (tag) {
+            const cls = [...tag.classList].find(c => c.startsWith('tag--') && c !== 'tag');
+            if (cls) card.dataset.type = cls.replace('tag--', '');
           }
-        });
-        // Update stat
-        const statEl = document.getElementById('stat-projects');
-        if (statEl) {
-          const count = document.querySelectorAll('#home-featured a').length;
-          if (count > 0) statEl.textContent = count;
         }
       });
-      observer.observe(document.body, { childList: true, subtree: true });
+      // Update project count stat
+      const statEl = document.getElementById('stat-projects');
+      if (statEl) {
+        const count = document.querySelectorAll('#home-featured a').length;
+        if (count > 0) statEl.textContent = count;
+      }
+    }
+    // Run once after load, then every 2s to catch async renders — stops after 10s
+    document.addEventListener('DOMContentLoaded', () => {
+      let runs = 0;
+      const interval = setInterval(() => {
+        tagProjectCards();
+        if (++runs >= 5) clearInterval(interval);
+      }, 2000);
+      tagProjectCards();
     });
   </script>
 </body>
