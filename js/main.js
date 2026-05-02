@@ -55,10 +55,17 @@ function showPage(page) {
 // ── Load Projects from Worker ──
 async function loadProjects() {
   try {
-    const res = await fetch(`${API_BASE}/projects`);
-    projects = await res.json();
-  } catch {
-    // Fallback demo data for development
+    // 8 second timeout — never hang the page
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 8000);
+    const res = await fetch(`${API_BASE}/projects`, { signal: controller.signal });
+    clearTimeout(timeout);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    projects = Array.isArray(data) ? data : [];
+    if (!projects.length) throw new Error('Empty response');
+  } catch (err) {
+    console.warn('Worker fetch failed, using fallback:', err.message);
     projects = getDemoProjects();
   }
   renderHomeProjects();
