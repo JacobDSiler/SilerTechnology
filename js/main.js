@@ -1,6 +1,6 @@
 /* ── Siler Technology — Main Site JS ── */
 
-const API_BASE = 'https://siler-tech-api.jacobdsiler.workers.dev'; // Cloudflare Worker URL — set this after deploying worker
+const API_BASE = 'https://siler-tech-api.jacobdsiler.workers.dev';
 
 // ── State ──
 let projects = [];
