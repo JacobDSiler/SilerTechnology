@@ -208,7 +208,7 @@
       });
     }
 
-    // Add data-type to project cards after grid renders — polled safely, no MutationObserver
+    // Tag project cards with data-type for filter functionality
     function tagProjectCards() {
       document.querySelectorAll('.project-card').forEach(card => {
         if (!card.dataset.type) {
@@ -219,21 +219,10 @@
           }
         }
       });
-      // Update project count stat
-      const statEl = document.getElementById('stat-projects');
-      if (statEl) {
-        const count = document.querySelectorAll('#home-featured a').length;
-        if (count > 0) statEl.textContent = count;
-      }
     }
-    // Run once after load, then every 2s to catch async renders — stops after 10s
+    // Run a few times after load to catch async renders
     document.addEventListener('DOMContentLoaded', () => {
-      let runs = 0;
-      const interval = setInterval(() => {
-        tagProjectCards();
-        if (++runs >= 5) clearInterval(interval);
-      }, 2000);
-      tagProjectCards();
+      [500, 1500, 3000].forEach(t => setTimeout(tagProjectCards, t));
     });
   </script>
 </body>
