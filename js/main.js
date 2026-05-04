@@ -152,14 +152,14 @@ function renderHomeProjects() {
   rest.forEach((p, i) => {
     const num = String(i + 2).padStart(2, '0');
     html += `
-      <a href="#project/${p.id}" style="text-decoration:none;color:inherit;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:2rem;padding:2rem 2rem;border-bottom:var(--border);transition:background 0.15s ease;" onmouseenter="this.style.background='var(--paper-off)'" onmouseleave="this.style.background=''">
+      <a href="#project/${p.id}" class="featured-strip" style="text-decoration:none;color:inherit;">
         <div class="featured-strip-num">${num}</div>
-        <div>
+        <div class="featured-strip-body">
           <div class="featured-strip-meta">${p.typeLabel} · ${formatDate(p.date)}</div>
-          <div style="font-size:1.2rem;font-weight:800;letter-spacing:-0.02em;">${p.title}</div>
+          <div class="featured-strip-title">${p.title}</div>
           <div class="featured-strip-desc">${p.synopsis}</div>
         </div>
-        <div style="font-size:1.5rem;font-weight:800;">↗</div>
+        <div class="featured-strip-arrow">↗</div>
       </a>`;
   });
 
