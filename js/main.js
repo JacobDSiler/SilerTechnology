@@ -131,8 +131,13 @@ function renderHomeProjects() {
   if (!container) return;
 
   const published = projects.filter(p => p.status === 'published');
+
+  // Update projects shipped stat with the real total
+  const statEl = document.getElementById('stat-projects');
+  if (statEl) statEl.textContent = published.length;
+
   const featured = published[0];
-  const rest = published.slice(1, 4);
+  const rest = published.slice(1, 5); // show top 5 total on home feed
 
   let html = '';
 
