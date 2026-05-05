@@ -151,13 +151,31 @@ function showAdminSection(section) {
 
 // ── Admin Projects ──
 async function loadAdminProjects() {
+  const container = document.getElementById('admin-project-list');
+  if (container) container.innerHTML = `<div style="padding:2rem;text-align:center;font-family:var(--font-mono);font-size:0.8rem;color:var(--ink-light);">Loading projects...</div>`;
+
   try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 10000);
     const res = await fetch(`${API_BASE}/projects?all=1`, {
-      headers: { 'Authorization': `Bearer ${adminToken}` }
+      headers: { 'Authorization': `Bearer ${adminToken}` },
+      signal: controller.signal
     });
-    projects = await res.json();
-  } catch {
+    clearTimeout(timeout);
+    if (res.status === 401) {
+      // Token expired — send back to login
+      sessionStorage.removeItem('siler_admin_token');
+      window.location.href = 'login.html';
+      return;
+    }
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    projects = Array.isArray(data) ? data : [];
+  } catch (err) {
+    console.error('loadAdminProjects error:', err.message);
     projects = [];
+    if (container) container.innerHTML = `<div style="padding:2rem;text-align:center;font-family:var(--font-mono);font-size:0.8rem;color:#dc2626;">Could not load projects: ${err.message}<br><br><button onclick="loadAdminProjects()" style="border:1.5px solid #0a0a0a;background:#0a0a0a;color:#fff;padding:8px 16px;font-family:var(--font-mono);font-size:0.72rem;cursor:pointer;">Retry</button></div>`;
+    return;
   }
   renderAdminProjectList();
 }
